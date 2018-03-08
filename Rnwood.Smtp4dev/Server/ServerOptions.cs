@@ -9,5 +9,16 @@ namespace Rnwood.Smtp4dev.Server
     {
         public int Port { get; set; }
         public bool AllowRemoteConnections { get; set; }
+
+        public SecureConnection SecureConnection { get; set; }
+    }
+
+    public class SecureConnection
+    {
+        public bool UseSecureConnection { get; set; }
+
+        public string CertificatePath { get; set; }
+
+        public string Thumbprint { get; set; }
     }
 }
