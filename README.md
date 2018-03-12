@@ -34,4 +34,27 @@ The version hosted on this repo is in heavy development. **Grab the [stable(r) v
 
 - Now configure your apps which send mail, to use the SMTP server on the machine where SMTP4dev is running (``localhost`` if they are on the same machine), and using the port you selected (``25`` by default).
 
+- Enable SSL CertificateStore (Windows Only)
+```
+  "ServerOptions": {
+    "Port": 465,
+    "AllowRemoteConnections": true,
+    "SecureConnection": {
+      "UseSecureConnection": true,
+      "Thumbprint": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  }
+```
 
+- Enable SSL Certificate With file (password is optional)
+```
+  "ServerOptions": {
+    "Port": 465,
+    "AllowRemoteConnections": true,
+    "SecureConnection": {
+      "UseSecureConnection": true,
+      "CertificatePath": "/home/uers/path.pfx",
+	  "CertificatePassword": "ABCDEF"
+    }
+  }
+```

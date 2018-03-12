@@ -18,7 +18,9 @@ namespace Rnwood.Smtp4dev.Server
         public bool UseSecureConnection { get; set; }
 
         public string CertificatePath { get; set; }
-
+        public string CertificatePassword { get; set; }
+        
+        // Windows only
         public string Thumbprint { get; set; }
     }
 }

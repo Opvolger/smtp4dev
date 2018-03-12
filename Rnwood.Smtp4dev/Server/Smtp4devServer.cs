@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Options;
-using MimeKit;
+﻿using Microsoft.Extensions.Options;
 using Rnwood.Smtp4dev.DbModel;
 using Rnwood.Smtp4dev.Hubs;
 using Rnwood.SmtpServer;
@@ -34,15 +32,24 @@ namespace Rnwood.Smtp4dev.Server
             {
                 if (!string.IsNullOrEmpty(secureConnection.CertificatePath))
                 {
-                    return new X509Certificate(File.ReadAllBytes(secureConnection.CertificatePath));
+                    return new X509Certificate(File.ReadAllBytes(secureConnection.CertificatePath), secureConnection.CertificatePassword);
                 }
                 if (!string.IsNullOrEmpty(secureConnection.Thumbprint))
                 {
-                    var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+                    // Windows/Azure Only
+                    var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
                     store.Open(OpenFlags.ReadOnly);
                     var cert = store.Certificates.OfType<X509Certificate2>()
-                        .FirstOrDefault(b => b.Thumbprint == secureConnection.Thumbprint);
+                        .FirstOrDefault(b => b.Thumbprint?.ToUpper() == secureConnection.Thumbprint.ToUpper());
                     store.Close();
+                    if (cert == null)
+                    {
+                        store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                        store.Open(OpenFlags.ReadOnly);
+                        cert = store.Certificates.OfType<X509Certificate2>()
+                            .FirstOrDefault(b => b.Thumbprint?.ToUpper() == secureConnection.Thumbprint.ToUpper());
+                        store.Close();
+                    }
                     return cert;
                 }
             }
