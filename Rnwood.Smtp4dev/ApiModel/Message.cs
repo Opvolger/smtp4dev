@@ -105,7 +105,7 @@ namespace Rnwood.Smtp4dev.ApiModel
                            FileName = string.IsNullOrEmpty(e.ContentType?.Name)
                                ? e.ContentDisposition?.FileName
                                : e.ContentType.Name,
-                           Url = $"/api/messages/{Id}/part/{result.ContentId}/content"
+                           Url = $"api/messages/{Id}/part/{result.ContentId}/content"
                        });
                    }
                }
